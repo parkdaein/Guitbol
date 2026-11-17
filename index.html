@@ -3,378 +3,473 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>K 귓볼 헌터스</title>
 <style>
 *{box-sizing:border-box}
 body{
- margin:0;background:#171923;color:white;
- font-family:Arial,"Malgun Gothic",sans-serif;
- text-align:center;user-select:none
+  margin:0;background:#171923;color:white;
+  font-family:Arial,"Malgun Gothic",sans-serif;
+  text-align:center
 }
-#game{
- max-width:850px;min-height:100vh;margin:auto;padding:15px;
- background:linear-gradient(#30394e,#171923);
-}
-h1{
- color:#ffd34d;font-size:clamp(30px,7vw,52px);
- text-shadow:3px 3px #000;margin:15px 0
-}
-h2{color:#ffd34d}
-button{
- border:2px solid #aaa;border-radius:12px;
- padding:14px 20px;font-size:17px;font-weight:bold;
- color:white;background:#424b61;cursor:pointer;
- touch-action:manipulation
-}
-button:disabled{opacity:.4}
-.primary{background:#bd2938;border-color:#ff8585;font-size:22px}
+#game{max-width:760px;margin:auto;padding:20px}
+h1{color:#ffd54a;font-size:36px;margin:12px 0}
+h2{color:#ffd54a}
 .panel{
- background:#20232d;border:2px solid #737987;
- border-radius:15px;padding:15px;margin:12px 0
+  background:#272b3a;border:2px solid #51576b;
+  border-radius:16px;padding:20px;margin:14px 0
 }
-.hidden{display:none!important}
-.status{
- display:flex;justify-content:space-around;
- flex-wrap:wrap;gap:8px;font-weight:bold
+button{
+  border:0;border-radius:12px;padding:14px 20px;
+  font-size:17px;font-weight:bold;cursor:pointer;
+  margin:6px;background:#ffd54a;color:#222
 }
-.bar{
- height:17px;background:#555;border:1px solid #aaa;
- border-radius:20px;overflow:hidden;margin:8px 0
-}
-.fill{height:100%;background:#43d879;width:100%;transition:width .2s}
-.enemyfill{background:#ed4545}
-.arena{
- min-height:275px;background:linear-gradient(#566477,#30313a);
- border:2px solid #858b98;border-radius:15px;
- display:flex;align-items:center;justify-content:center;
- margin:15px 0;position:relative
-}
-.face{
- position:relative;width:220px;height:225px;
- display:flex;align-items:center;justify-content:center
-}
-.head{
- position:absolute;width:145px;height:165px;
- background:#d6a783;border:4px solid #573c30;
- border-radius:48% 48% 45% 45%;
- top:25px;z-index:2
+button:disabled{background:#666;color:#aaa;cursor:not-allowed}
+.hidden{display:none}
+.status{display:flex;justify-content:space-around;gap:8px;flex-wrap:wrap}
+.stat{background:#171923;padding:12px;border-radius:10px;min-width:120px}
+.bar{height:18px;background:#555;border-radius:20px;overflow:hidden;margin:8px 0}
+.fill{height:100%;width:100%;background:#42d66b;transition:width .2s}
+.enemyFill{background:#ed5151}
+#bossArea{padding:20px}
+#face{
+  position:relative;width:190px;height:190px;margin:22px auto;
+  background:#e7b58e;border:5px solid #543d32;border-radius:48% 48% 45% 45%;
 }
 .ear{
- position:absolute;width:55px;height:85px;
- background:#d6a783;border:4px solid #573c30;
- border-radius:48%;top:80px;z-index:1
+  position:absolute;top:62px;width:52px;height:72px;
+  background:#e7b58e;border:5px solid #543d32;border-radius:50%;
 }
-.ear.left{left:0}
-.ear.right{right:0}
-.inner{
- position:absolute;width:23px;height:42px;
- border:3px solid #a36b55;border-radius:50%;
- top:18px;left:12px
-}
+.ear.left{left:-43px}
+.ear.right{right:-43px}
 .eye{
- position:absolute;top:68px;width:12px;height:9px;
- background:#30251e;border-radius:50%
+  position:absolute;top:65px;width:15px;height:18px;
+  background:#222;border-radius:50%
 }
-.eye.left{left:35px}
-.eye.right{right:35px}
+.eye.left{left:48px}.eye.right{right:48px}
 .nose{
- position:absolute;left:63px;top:82px;
- width:15px;height:22px;border-bottom:3px solid #875b46;
- border-radius:50%
+  position:absolute;top:91px;left:78px;width:28px;height:25px;
+  background:#c98770;border-radius:50%
 }
 .mouth{
- position:absolute;left:48px;top:117px;
- width:45px;height:12px;border-bottom:3px solid #63372f;
- border-radius:50%
+  position:absolute;top:137px;left:65px;width:60px;height:5px;
+  background:#633b34;border-radius:10px
 }
 .hair{
- position:absolute;top:-5px;left:8px;width:120px;height:35px;
- background:#302a27;border-radius:60% 60% 20% 20%
+  position:absolute;top:-13px;left:25px;width:130px;height:35px;
+  background:#34251f;border-radius:50% 50% 10% 10%
 }
-.face-name{
- position:absolute;bottom:-20px;font-weight:bold;
- color:#ffe58a;z-index:4
+#bossName{font-size:25px;font-weight:bold;color:#ffcf58}
+#message{min-height:32px;color:#ffe28b;font-size:18px;margin:12px}
+#timingArea{margin:20px auto;max-width:420px}
+#gauge{
+  height:28px;background:#444;border-radius:20px;
+  position:relative;overflow:hidden;border:2px solid #aaa
 }
-.gauge{
- height:35px;background:#111;border:3px solid #aaa;
- border-radius:8px;position:relative;overflow:hidden;
- margin:20px 0
+#goodZone{
+  position:absolute;left:76%;width:15%;height:100%;
+  background:rgba(255,210,40,.5)
 }
-.good{
- position:absolute;left:76%;width:8%;height:100%;
- background:#d9b82b
+#perfectZone{
+  position:absolute;left:81%;width:4%;height:100%;
+  background:#35dc72
 }
-.perfect{
- position:absolute;left:81%;width:3%;height:100%;
- background:#25d85c
+#marker{
+  position:absolute;left:0%;top:0;width:5px;height:100%;
+  background:white;box-shadow:0 0 8px white
 }
-.marker{
- position:absolute;left:0;top:-2px;width:5px;height:35px;
- background:white;box-shadow:0 0 7px white
-}
-#message{
- min-height:35px;color:#ffdf64;font-weight:bold;
- font-size:18px;margin:12px
-}
-#touchButton{width:100%;padding:20px;font-size:23px}
-.reward{color:#ffe45b;font-size:24px;font-weight:bold}
-@media(max-width:500px){
- #game{padding:9px}
- .arena{min-height:250px}
-}
+#attackBtn{background:#ff6b58;color:white;font-size:21px}
+#itemBtn{background:#6bc7ff;color:#102d42}
+#cooldownText{font-size:14px;color:#aaa;min-height:20px}
+.itemInfo{color:#83d5ff;font-size:18px;font-weight:bold}
+.small{font-size:13px;color:#bbb}
 </style>
 </head>
 <body>
 <div id="game">
 
-<section id="titleScreen">
-<h1>K 귓볼 헌터스</h1>
-<div class="panel">
-<h2>귓볼의 전설이 시작된다</h2>
-<p>여섯 명의 강력한 보스가 기다리고 있습니다.</p>
-<p>타이밍에 맞춰 화면을 터치해 귓볼을 공략하세요!</p>
-<p>체력이 모두 소진되면 인사위원회에 회부됩니다.</p>
-<div style="font-size:65px">👂 🎯 👂</div>
-</div>
-<button class="primary" onclick="startGame()">게임 시작</button>
-</section>
+  <section id="titleScreen">
+    <h1>K 귓볼 헌터스</h1>
+    <div class="panel">
+      <h2>귓볼을 사수하라!</h2>
+      <p>타이밍에 맞춰 귓볼을 공격하고<br>6명의 보스를 모두 제압하세요.</p>
+      <p>체력이 0이 되면 지콜로와의 면담이 시작됩니다.</p>
+      <button onclick="startGame()">게임 시작</button>
+    </div>
+  </section>
 
-<section id="battleScreen" class="hidden">
-<h1>K 귓볼 헌터스</h1>
-<div class="panel status">
-<span id="stageText">STAGE 1</span>
-<span>❤️ 체력 <span id="hpText">100</span></span>
-</div>
+  <section id="battleScreen" class="hidden">
+    <h1>K 귓볼 헌터스</h1>
 
-<div class="arena">
-<div>
-<div class="face">
-<div class="ear left"><div class="inner"></div></div>
-<div class="ear right"><div class="inner"></div></div>
-<div class="head">
-<div class="hair"></div>
-<div class="eye left"></div>
-<div class="eye right"></div>
-<div class="nose"></div>
-<div class="mouth"></div>
-</div>
-<div class="face-name" id="bossName">궐동 독사</div>
-</div>
-</div>
-</div>
+    <div class="panel">
+      <div class="status">
+        <div class="stat">스테이지<br><strong id="stageText">1 / 6</strong></div>
+        <div class="stat">내 체력<br><strong id="playerHpText">100 / 100</strong></div>
+        <div class="stat">코요태 가발<br><strong id="itemCount">0개</strong></div>
+      </div>
 
-<div class="panel">
-<div class="status">
-<span>👤 주인공</span>
-<span id="bossHpText">보스 체력</span>
-</div>
-<div class="bar"><div class="fill" id="playerBar"></div></div>
-<div class="bar"><div class="fill enemyfill" id="bossBar"></div></div>
-</div>
+      <p>내 체력</p>
+      <div class="bar"><div id="playerHpBar" class="fill"></div></div>
+    </div>
 
-<div class="panel">
-<h3>🎯 귓볼 포착 타이밍</h3>
-<p>흰색 표시가 초록색 구간에 들어오면 터치하세요!</p>
-<div class="gauge">
-<div class="good"></div>
-<div class="perfect"></div>
-<div class="marker" id="marker"></div>
-</div>
-<div id="message">타이밍을 기다리세요!</div>
-<button id="touchButton" class="primary" onclick="attack()">👂 귓볼 잡기!</button>
-</div>
-</section>
+    <div class="panel" id="bossArea">
+      <div id="bossName">궐동 독사</div>
+      <div id="face">
+        <div class="hair"></div>
+        <div class="ear left"></div>
+        <div class="ear right"></div>
+        <div class="eye left"></div>
+        <div class="eye right"></div>
+        <div class="nose"></div>
+        <div class="mouth"></div>
+      </div>
+      <p>보스 체력</p>
+      <div class="bar"><div id="bossHpBar" class="fill enemyFill"></div></div>
+      <div id="bossHpText">65 / 65</div>
+    </div>
 
-<section id="clearScreen" class="hidden">
-<h1>STAGE CLEAR!</h1>
-<div class="panel">
-<h2 id="clearName">보스 격파!</h2>
-<p class="reward">보스의 귓볼을 제압했습니다!</p>
-<p id="clearText"></p>
-</div>
-<button class="primary" onclick="nextStage()">다음 스테이지</button>
-</section>
+    <div class="panel">
+      <div id="message">타이밍에 맞춰 귓볼을 공격하세요!</div>
+      <div id="timingArea">
+        <div id="gauge">
+          <div id="goodZone"></div>
+          <div id="perfectZone"></div>
+          <div id="marker"></div>
+        </div>
+        <p class="small">초록색 구간: PERFECT / 노란색 구간: GOOD</p>
+      </div>
 
-<section id="gameOverScreen" class="hidden">
-<h1>GAME OVER</h1>
-<div class="panel">
-<div style="font-size:75px">📋</div>
-<h2>인사위원회 회부!</h2>
-<p>주인공의 체력이 모두 소진되었습니다.</p>
-<p>인사위원회에서 최종 처분을 기다리세요...</p>
-</div>
-<button class="primary" onclick="startGame()">재도전</button>
-<button onclick="showTitle()">타이틀로</button>
-</section>
+      <button id="attackBtn" onclick="attack()">귓볼 공격!</button>
+      <div id="cooldownText">공격 준비 완료</div>
+      <br>
+      <button id="itemBtn" onclick="useItem()">코요태 가발 사용</button>
+      <p class="itemInfo">보유 수량: <span id="itemCount2">0</span>개</p>
+    </div>
+  </section>
 
-<section id="endingScreen" class="hidden">
-<h1>ALL CLEAR!</h1>
-<div class="panel">
-<div style="font-size:75px">🏆</div>
-<h2>전설의 귓볼 헌터!</h2>
-<p>여섯 명의 보스를 모두 제압했습니다.</p>
-<p>인사위원회 회부를 피했습니다!</p>
-</div>
-<button class="primary" onclick="startGame()">다시 플레이</button>
-<button onclick="showTitle()">타이틀로</button>
-</section>
+  <section id="clearScreen" class="hidden">
+    <div class="panel">
+      <h1>STAGE CLEAR!</h1>
+      <h2 id="clearBossName"></h2>
+      <p>보스를 제압했습니다!</p>
+      <p class="itemInfo">코요태 가발 3개를 획득했습니다.</p>
+      <button onclick="nextStage()">다음 스테이지</button>
+    </div>
+  </section>
+
+  <section id="interviewScreen" class="hidden">
+    <div class="panel">
+      <h1>GAME OVER</h1>
+      <h2>지콜로와의 면담</h2>
+      <p>체력이 모두 소진되었습니다.</p>
+      <p>지콜로와의 면담을 피할 수 없습니다.</p>
+      <div style="font-size:70px;margin:20px">📋</div>
+      <p>지콜로: "잠깐 이야기 좀 하시죠."</p>
+      <button onclick="startGame()">다시 도전하기</button>
+      <button onclick="showTitle()">타이틀로</button>
+    </div>
+  </section>
+
+  <section id="endingScreen" class="hidden">
+    <div class="panel">
+      <h1>ALL CLEAR!</h1>
+      <h2>귓볼 헌터 마스터</h2>
+      <p>6명의 보스를 모두 제압했습니다!</p>
+      <p>전설의 귓볼 헌터가 되셨습니다.</p>
+      <div style="font-size:70px;margin:20px">🏆</div>
+      <button onclick="startGame()">다시 플레이</button>
+      <button onclick="showTitle()">타이틀로</button>
+    </div>
+  </section>
 
 </div>
 
 <script>
-const bosses=[
- {name:"궐동 독사",hp:65,attack:8},
- {name:"곽영덕",hp:90,attack:11},
- {name:"탱크조종사",hp:120,attack:14},
- {name:"코요태",hp:155,attack:17},
- {name:"이용광",hp:195,attack:20},
- {name:"나우주",hp:245,attack:24}
+const bosses = [
+  {name:"궐동 독사", hp:65, attack:8},
+  {name:"곽영덕", hp:90, attack:11},
+  {name:"탱크조종사", hp:120, attack:14},
+  {name:"코요태", hp:155, attack:17},
+  {name:"이용광", hp:195, attack:20},
+  {name:"나우주", hp:245, attack:24}
 ];
 
-let stage=0;
-let playerHp=100;
-let bossHp=0;
-let marker=0;
-let direction=1;
-let scene="title";
-let gaugeTimer=null;
-let enemyTimer=null;
-let lastAttack=0;
+const MAX_HP = 100;
+const ATTACK_COOLDOWN = 1500;
+const ENEMY_ATTACK_INTERVAL = 2500;
+const HEAL_AMOUNT = 35;
 
-const $=id=>document.getElementById(id);
+let stage = 0;
+let playerHp = MAX_HP;
+let bossHp = 0;
+let bossMaxHp = 0;
+let items = 0;
 
-function screen(id){
- ["titleScreen","battleScreen","clearScreen",
-  "gameOverScreen","endingScreen"].forEach(x=>$(x).classList.add("hidden"));
- $(id).classList.remove("hidden");
-}
+let markerPosition = 0;
+let markerDirection = 1;
+let lastPlayerAttack = 0;
+let lastEnemyAttack = 0;
+let gameActive = false;
+let gaugeTimer = null;
+let enemyTimer = null;
+let cooldownTimer = null;
+let stageRewarded = [];
 
-function stopTimers(){
- clearInterval(gaugeTimer);
- clearInterval(enemyTimer);
- gaugeTimer=null;
- enemyTimer=null;
-}
-
-function showTitle(){
- stopTimers();
- scene="title";
- screen("titleScreen");
+function showScreen(id){
+  document.querySelectorAll("#game > section").forEach(el=>{
+    el.classList.add("hidden");
+  });
+  document.getElementById(id).classList.remove("hidden");
 }
 
 function startGame(){
- stopTimers();
- stage=0;
- playerHp=100;
- loadStage();
+  clearTimers();
+
+  stage = 0;
+  playerHp = MAX_HP;
+  items = 0;
+  stageRewarded = [];
+  lastPlayerAttack = 0;
+  lastEnemyAttack = Date.now();
+
+  loadStage();
+}
+
+function clearTimers(){
+  if(gaugeTimer) clearInterval(gaugeTimer);
+  if(enemyTimer) clearInterval(enemyTimer);
+  if(cooldownTimer) clearInterval(cooldownTimer);
+
+  gaugeTimer = null;
+  enemyTimer = null;
+  cooldownTimer = null;
 }
 
 function loadStage(){
- if(stage>=bosses.length){
-  scene="ending";
-  screen("endingScreen");
-  return;
- }
+  clearTimers();
 
- bossHp=bosses[stage].hp;
- marker=0;
- direction=1;
- lastAttack=Date.now();
+  const boss = bosses[stage];
+  bossHp = boss.hp;
+  bossMaxHp = boss.hp;
+  gameActive = true;
 
- scene="battle";
- $("stageText").textContent=`STAGE ${stage+1} / 6`;
- $("bossName").textContent=bosses[stage].name;
- $("message").textContent="귓볼을 노리세요!";
- updateUI();
- screen("battleScreen");
+  markerPosition = 0;
+  markerDirection = 1;
+  lastPlayerAttack = 0;
+  lastEnemyAttack = Date.now();
 
- gaugeTimer=setInterval(moveGauge,20);
- enemyTimer=setInterval(enemyAttack,500);
+  document.getElementById("stageText").textContent =
+    `${stage+1} / ${bosses.length}`;
+
+  document.getElementById("bossName").textContent = boss.name;
+  document.getElementById("message").textContent =
+    "타이밍에 맞춰 귓볼을 공격하세요!";
+
+  showScreen("battleScreen");
+  updateUI();
+
+  gaugeTimer = setInterval(moveMarker, 16);
+  enemyTimer = setInterval(enemyAttack, 100);
 }
 
-function moveGauge(){
- marker+=direction*0.9;
- if(marker>=100){marker=100;direction=-1;}
- if(marker<=0){marker=0;direction=1;}
- $("marker").style.left=marker+"%";
+function moveMarker(){
+  if(!gameActive) return;
+
+  markerPosition += markerDirection * 1.25;
+
+  if(markerPosition >= 100){
+    markerPosition = 100;
+    markerDirection = -1;
+  }
+  if(markerPosition <= 0){
+    markerPosition = 0;
+    markerDirection = 1;
+  }
+
+  document.getElementById("marker").style.left =
+    markerPosition + "%";
 }
 
 function attack(){
- if(scene!=="battle")return;
+  if(!gameActive) return;
 
- const now=Date.now();
- if(now-lastAttack<450)return;
- lastAttack=now;
+  const now = Date.now();
+  const remaining = ATTACK_COOLDOWN - (now - lastPlayerAttack);
 
- let damage=0;
- let result="MISS!";
+  if(remaining > 0){
+    document.getElementById("message").textContent =
+      "아직 귓볼 공격 쿨타임입니다!";
+    return;
+  }
 
- if(marker>=81&&marker<=84){
-  damage=25;
-  result="PERFECT! 귓볼 정확히 포착!";
- }else if(marker>=76&&marker<=90){
-  damage=13;
-  result="GOOD! 귓볼 공격 성공!";
- }else{
-  damage=4;
-  result="MISS! 귓볼을 놓쳤습니다!";
- }
+  lastPlayerAttack = now;
 
- bossHp=Math.max(0,bossHp-damage);
- $("message").textContent=`${result} 보스에게 ${damage} 데미지!`;
- updateUI();
+  let damage = 4;
+  let result = "MISS";
 
- if(bossHp<=0)stageClear();
+  if(markerPosition >= 81 && markerPosition <= 85){
+    damage = 25;
+    result = "PERFECT!";
+  }
+  else if(markerPosition >= 76 && markerPosition <= 90){
+    damage = 13;
+    result = "GOOD!";
+  }
+
+  bossHp = Math.max(0, bossHp - damage);
+
+  document.getElementById("message").textContent =
+    `${result} 귓볼 공격 성공! 보스에게 ${damage} 데미지!`;
+
+  updateUI();
+  updateCooldown();
+
+  if(bossHp <= 0){
+    stageClear();
+  }
+}
+
+function updateCooldown(){
+  if(cooldownTimer) clearInterval(cooldownTimer);
+
+  cooldownTimer = setInterval(()=>{
+    if(!gameActive){
+      clearInterval(cooldownTimer);
+      return;
+    }
+
+    const remaining =
+      ATTACK_COOLDOWN - (Date.now() - lastPlayerAttack);
+
+    const btn = document.getElementById("attackBtn");
+    const text = document.getElementById("cooldownText");
+
+    if(remaining <= 0){
+      btn.disabled = false;
+      text.textContent = "공격 준비 완료";
+      clearInterval(cooldownTimer);
+    }else{
+      btn.disabled = true;
+      text.textContent =
+        `공격 쿨타임: ${(remaining/1000).toFixed(1)}초`;
+    }
+  }, 50);
 }
 
 function enemyAttack(){
- if(scene!=="battle")return;
- if(Date.now()-lastAttack<2500)return;
+  if(!gameActive) return;
 
- lastAttack=Date.now();
- const damage=bosses[stage].attack;
- playerHp=Math.max(0,playerHp-damage);
+  const now = Date.now();
 
- $("message").textContent=
-  `${bosses[stage].name}의 반격! 체력 -${damage}`;
+  if(now - lastEnemyAttack < ENEMY_ATTACK_INTERVAL) return;
 
- updateUI();
+  lastEnemyAttack = now;
 
- if(playerHp<=0)gameOver();
+  const damage = bosses[stage].attack;
+  playerHp = Math.max(0, playerHp - damage);
+
+  document.getElementById("message").textContent =
+    `보스의 반격! 내 체력 ${damage} 감소!`;
+
+  updateUI();
+
+  if(playerHp <= 0){
+    gameOver();
+  }
+}
+
+function useItem(){
+  if(!gameActive) return;
+
+  if(items <= 0){
+    document.getElementById("message").textContent =
+      "사용할 코요태 가발이 없습니다!";
+    return;
+  }
+
+  if(playerHp >= MAX_HP){
+    document.getElementById("message").textContent =
+      "체력이 이미 가득 찼습니다!";
+    return;
+  }
+
+  items--;
+
+  const before = playerHp;
+  playerHp = Math.min(MAX_HP, playerHp + HEAL_AMOUNT);
+  const recovered = playerHp - before;
+
+  document.getElementById("message").textContent =
+    `코요태 가발 사용! 체력 ${recovered} 회복!`;
+
+  updateUI();
 }
 
 function updateUI(){
- $("hpText").textContent=playerHp;
- $("bossHpText").textContent=`보스 체력 ${bossHp}`;
- $("playerBar").style.width=playerHp+"%";
- $("bossBar").style.width=
-  Math.max(0,bossHp/bosses[stage].hp*100)+"%";
+  document.getElementById("playerHpText").textContent =
+    `${playerHp} / ${MAX_HP}`;
+
+  document.getElementById("playerHpBar").style.width =
+    (playerHp / MAX_HP * 100) + "%";
+
+  document.getElementById("bossHpText").textContent =
+    `${bossHp} / ${bossMaxHp}`;
+
+  document.getElementById("bossHpBar").style.width =
+    (bossHp / bossMaxHp * 100) + "%";
+
+  document.getElementById("itemCount").textContent =
+    items + "개";
+
+  document.getElementById("itemCount2").textContent =
+    items;
+
+  document.getElementById("attackBtn").disabled =
+    !gameActive || (Date.now() - lastPlayerAttack < ATTACK_COOLDOWN);
+
+  document.getElementById("itemBtn").disabled =
+    !gameActive || items <= 0 || playerHp >= MAX_HP;
 }
 
 function stageClear(){
- if(scene!=="battle")return;
- stopTimers();
- scene="clear";
+  if(!gameActive) return;
 
- $("clearName").textContent=`${bosses[stage].name} 격파!`;
- $("clearText").textContent=
-  stage===5
-  ?"최종 보스를 쓰러뜨렸습니다!"
-  :`다음 상대는 ${bosses[stage+1].name}입니다!`;
+  gameActive = false;
+  clearTimers();
 
- screen("clearScreen");
+  // 각 스테이지 클리어 시 코요태 가발 3개 지급
+  if(!stageRewarded[stage]){
+    items += 3;
+    stageRewarded[stage] = true;
+  }
+
+  document.getElementById("clearBossName").textContent =
+    bosses[stage].name;
+
+  showScreen("clearScreen");
 }
 
 function nextStage(){
- stage++;
- loadStage();
+  if(stage >= bosses.length - 1){
+    clearTimers();
+    showScreen("endingScreen");
+    return;
+  }
+
+  stage++;
+  loadStage();
 }
 
 function gameOver(){
- stopTimers();
- scene="gameover";
- screen("gameOverScreen");
+  gameActive = false;
+  clearTimers();
+  showScreen("interviewScreen");
+}
+
+function showTitle(){
+  clearTimers();
+  gameActive = false;
+  showScreen("titleScreen");
 }
 </script>
 </body>
